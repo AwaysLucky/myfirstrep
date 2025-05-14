@@ -1,2 +1,2 @@
-# myfristrep
-this is my frist repository,for practicing
+# myfirstrep
+this is my first repository,for practicing
