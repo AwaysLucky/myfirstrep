@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册 - 购物商城</title>
+    <style>
+        /* 全局样式 - 与登录页一致 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 注册容器 - 与登录页一致 */
+        .register-container {
+            background-color: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 20px;
+        }
+
+        /* 标题样式 - 与登录页一致 */
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #3498db;
+        }
+
+        /* 表单组样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* 输入框样式 - 保持原有ID和name */
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+        }
+
+        /* 按钮样式 - 与登录页一致 */
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* 错误消息 - 保持原有th:if逻辑 */
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin: 0 0 20px 0;
+            padding: 12px;
+            background-color: rgba(231, 76, 60, 0.1);
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        /* 链接样式 - 与登录页一致 */
+        .login-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .login-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>注册新用户</h2>
+
+    <!-- 保持原有错误显示逻辑 -->
+    <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+    <!-- 保持原有form结构和所有name属性 -->
+    <form th:action="@{/register}" method="post">
+        <div class="form-group">
+            <label for="userId">用户ID</label>
+            <input type="number" id="userId" name="userId" placeholder="请输入数字ID" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" name="username" placeholder="请输入用户名" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" name="password" placeholder="请输入密码" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" id="email" name="email" placeholder="请输入有效邮箱" required/>
+        </div>
+
+        <button type="submit">注册</button>
+    </form>
+
+    <a href="/login" class="login-link">已有账号？去登录</a>
+</div>
+
+</body>
+</html>

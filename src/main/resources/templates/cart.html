@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的购物车</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active-link {
+            background-color: #3498db;
+        }
+
+        .nav-link span.icon {
+            margin-right: 6px;
+            font-size: 1.1em;
+        }
+
+        /* 主要内容区域 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        td img.product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .product-name {
+            font-size: 1rem;
+            color: #2c3e50;
+        }
+
+        .product-price {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .quantity-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-form button {
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            line-height: 1;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: white;
+        }
+
+        .quantity-form button:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 20px;
+            display: block;
+        }
+
+        .checkout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .checkout-btn:hover {
+            background-color: #27ae60;
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .quantity-form {
+                flex-direction: row;
+            }
+        }
+        /* 底部样式 */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+        }
+        .logout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/home" class="logo">购物商城</a>
+        <div class="nav-links">
+            <a href="/home" class="nav-link"><span class="icon">🏠</span>首页</a>
+            <a href="/orders" class="nav-link"><span class="icon">📦</span>订单查看</a>
+            <a href="/profile" class="nav-link"><span class="icon">👤</span>个人信息</a>
+            <a href="/cart" class="nav-link active-link"><span class="icon">🛒</span>购物车</a>
+            <a href="/login" class="logout-btn">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<!-- 主要内容 -->
+<div class="container">
+    <h2>我的购物车</h2>
+
+    <!-- 购物车商品列表 -->
+    <table>
+        <thead>
+        <tr>
+            <th>商品图片</th>
+            <th>商品名称</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>小计</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cartItems}">
+            <td><img th:src="${item.product.imageUrl}" alt="商品图片" class="product-image"></td>
+            <td class="product-name" th:text="${item.product.name}">商品名称</td>
+            <td class="product-price" th:text="'¥' + ${#numbers.formatDecimal(item.product.price, 1, 'COMMA', 2, 'POINT')}">¥0.00</td>
+            <td>
+                <form class="quantity-form" method="post" th:action="@{/cart/update}">
+                    <input type="hidden" name="productId" th:value="${item.productId}" />
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <button type="submit" name="change" value="-1">-</button>
+                    <span th:text="${item.quantity}">1</span>
+                    <button type="submit" name="change" value="+1">+</button>
+                </form>
+            </td>
+            <td class="product-price" th:text="'¥' + ${#numbers.formatDecimal(item.subtotal, 1, 'COMMA', 2, 'POINT')}">¥0.00</td>
+            <td><a th:href="@{/cart/remove(productId=${item.productId})}" class="btn-delete">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 显示总金额 -->
+    <p class="total">
+        总计：
+        <span th:text="'¥' + ${#numbers.formatDecimal(totalAmount, 1, 'COMMA', 2, 'POINT')}">¥0.00</span>
+    </p>
+
+    <!-- 预留“去结算”按钮 -->
+    <form method="post" action="/orders/create">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+        <button type="submit" class="checkout-btn">去结算</button>
+    </form>
+</div>
+
+<!-- 底部页脚 -->
+<footer class="footer">
+    <p>© 2025 购物商城 版权所有lry</p>
+</footer>
+
+</body>
+</html>

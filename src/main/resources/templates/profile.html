@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active-link {
+            background-color: #3498db;
+        }
+
+        .nav-link span.icon {
+            margin-right: 6px;
+            font-size: 1.1em;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 20px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* 主要内容区域 */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            color: #2ecc71;
+        }
+
+        .error {
+            color: #e74c3c;
+        }
+
+        /* 底部页脚 */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/home" class="logo">购物商城</a>
+        <div class="nav-links">
+            <a href="/home" class="nav-link"><span class="icon">🏠</span>首页</a>
+            <a href="/orders" class="nav-link"><span class="icon">📦</span>订单查看</a>
+            <a href="/profile" class="nav-link active-link"><span class="icon">👤</span>个人信息</a>
+            <a href="/cart" class="nav-link"><span class="icon">🛒</span>购物车</a>
+            <a href="/login" class="logout-btn">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<!-- 页面主体 -->
+<div class="container">
+    <h2>个人信息</h2>
+
+    <!-- 用户信息展示 -->
+    <p><strong>用户名：</strong> <span th:text="${user.username}">lry</span></p>
+    <p><strong>邮箱：</strong> <span th:text="${user.email}">example@example.com</span></p>
+    <p><strong>注册时间：</strong> <span th:text="${user.createdAt}">2023-05-07</span></p>
+    <!-- 修改用户名表单 -->
+    <form method="post" action="/profile/update-username">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+        <label for="newUsername">新用户名：</label>
+        <input type="text" id="newUsername" name="newUsername" required minlength="3" maxlength="50"
+               placeholder="请输入新的用户名" />
+
+        <button type="submit">提交修改</button>
+    </form>
+
+    <!-- 成功/错误提示 -->
+    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="message error" th:text="${errorMessage}"></div>
+</div>
+
+<!-- 底部页脚 -->
+<footer class="footer">
+    <p>© 2025 购物商城 版权所有lry</p>
+</footer>
+
+</body>
+</html>

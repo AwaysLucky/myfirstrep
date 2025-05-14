@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active-link {
+            background-color: #3498db;
+        }
+
+        .nav-link span.icon {
+            margin-right: 6px;
+            font-size: 1.1em;
+        }
+
+
+        /* 主要内容区域 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-right: 10px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-complete {
+            background-color: #2ecc71;
+        }
+
+        .btn-complete:hover {
+            background-color: #27ae60;
+        }
+
+        .checkout-btn {
+            background-color: #e67e22;
+        }
+
+        .checkout-btn:hover {
+            background-color: #d35400;
+        }
+
+        .status-unpaid {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .order-id-link {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .order-id-link:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .actions form {
+            display: inline-block;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+        }
+        .logout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/home" class="logo">购物商城</a>
+        <div class="nav-links">
+            <a href="/home" class="nav-link"><span class="icon">🏠</span>首页</a>
+            <a href="/orders" class="nav-link active-link"><span class="icon">📦</span>订单查看</a>
+            <a href="/profile" class="nav-link"><span class="icon">👤</span>个人信息</a>
+            <a href="/cart" class="nav-link"><span class="icon">🛒</span>购物车</a>
+            <a href="/login" class="logout-btn">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>我的订单</h2>
+
+    <!-- 下单按钮 -->
+    <a href="/cart" class="btn checkout-btn">前往购物车</a>
+
+    <!-- 订单表格 -->
+    <table>
+        <thead>
+        <tr>
+            <th>订单编号</th>
+            <th>总金额</th>
+            <th>下单时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td>
+                <a th:href="@{/orders/{id}(id=${order.orderId})}" th:text="${order.orderId}" class="order-id-link"></a>
+            </td>
+            <td th:text="'¥' + ${#numbers.formatDecimal(order.totalAmount, 1, 'COMMA', 2, 'POINT')}">¥0.00</td>
+            <td th:text="${order.createdAt}">2023-05-07 12:00:00</td>
+            <td th:class="${order.status == 'unpaid'} ? 'status-unpaid' : 'status-completed'"
+                th:text="${order.status == 'unpaid'} ? '未支付' : '已支付'">
+            </td>
+            <td class="actions">
+                <span th:if="${order.status == 'unpaid'}">
+                    <form method="post" th:action="@{/orders/complete/{id}(id=${order.orderId})}">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-complete">支付</button>
+                    </form>
+                </span>
+                <span th:unless="${order.status == 'unpaid'}">无操作</span>
+            </td>
+        </tr>
+
+        <!-- 如果没有订单 -->
+        <tr th:if="${orders == null or #lists.isEmpty(orders)}">
+            <td colspan="5">
+                <p class="no-orders">您目前没有任何订单。</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 底部页脚 -->
+<footer class="footer">
+    <p>© 2025 购物商城 版权所有lry</p>
+</footer>
+
+</body>
+</html>

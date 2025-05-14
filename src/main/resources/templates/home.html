@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>购物商城 - 首页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* 全局样式 */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* 导航栏样式 */
+    .navbar {
+      background-color: #2c3e50;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-link {
+      color: #ecf0f1;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .nav-link:hover,
+    .nav-link.active-link {
+      background-color: #3498db;
+    }
+
+    .nav-link span.icon {
+      margin-right: 6px;
+      font-size: 1.1em;
+    }
+
+    /* 主要内容区域 */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* 欢迎信息 */
+    .welcome-section {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .welcome-section h1 {
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .welcome-section p {
+      color: #7f8c8d;
+      margin-top: 0;
+    }
+
+    /* 分类导航 */
+    .category-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .category-btn {
+      padding: 8px 15px;
+      background-color: #ecf0f1;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .category-btn:hover {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .category-btn.active-category {
+      background-color: #3498db;
+      color: white;
+    }
+
+    /* 商品卡片 */
+    .products-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-name {
+      font-size: 1.1rem;
+      margin: 0 0 10px 0;
+      color: #2c3e50;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-price {
+      color: #e74c3c;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      color: #f39c12;
+      font-size: 0.9rem;
+    }
+
+    .star-icon {
+      margin-right: 5px;
+    }
+
+    /* 底部样式 */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    .logout-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 8px 20px;
+      background-color: #e74c3c;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: #c0392b;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .products-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/home" class="logo">购物商城</a>
+    <div class="nav-links">
+      <a href="/home" class="nav-link active-link"><span class="icon">🏠</span>首页</a>
+      <a href="/orders" class="nav-link"><span class="icon">📦</span>订单查看</a>
+      <a href="/profile" class="nav-link"><span class="icon">👤</span>个人信息</a>
+      <a href="/cart" class="nav-link"><span class="icon">🛒</span>购物车</a>
+      <a href="/login" class="logout-btn">退出登录</a>
+    </div>
+  </div>
+</nav>
+<!-- 主要内容 -->
+<div class="container">
+  <!-- 欢迎信息 -->
+  <div class="welcome-section">
+    <h1>欢迎您, <span th:text="${username}">User</span>!</h1>
+    <p>发现最新最热的商品，享受购物乐趣</p>
+  </div>
+
+  <!-- 分类导航 -->
+  <div class="category-nav">
+    <button class="category-btn active-category" onclick="loadProductsByCategory('')">热门商品</button>
+    <button th:each="category : ${categories}"
+            th:text="${category}"
+            th:data-category="${category}"
+            onclick="loadProductsByCategory(this.getAttribute('data-category'))"
+            class="category-btn"></button>
+  </div>
+
+  <!-- 商品展示 -->
+  <h2 style="color: #2c3e50; margin-bottom: 15px;">商品展示</h2>
+  <div id="products-container" class="products-container">
+    <!-- 初始加载时显示的商品 -->
+    <div th:each="product : ${products}" class="product-card">
+      <a th:href="@{/product/{id}(id=${product.productId})}">
+        <img th:src="${product.imageUrl}" alt="商品图片" class="product-image">
+        <div class="product-info">
+          <h3 class="product-name" th:text="${product.name}"></h3>
+          <p class="product-price" th:text="'¥' + ${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')}"></p>
+          <div class="product-rating">
+            <span class="star-icon">★</span>
+            <span th:text="${product.totalScore} + ' (' + ${product.ratingCount} + '次浏览)'"></span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 页脚保持不变 -->
+<footer class="footer">
+  <p>© 2025 购物商城 版权所有lry</p>
+</footer>
+
+<script>
+  function loadProductsByCategory(category) {
+    // 更新按钮状态
+    document.querySelectorAll('.category-btn').forEach(btn => {
+      btn.classList.remove('active-category');
+    });
+    event.currentTarget.classList.add('active-category');
+
+    // 构建请求URL
+    let url = '/api/products';
+    if (category) {
+      url += '?category=' + encodeURIComponent(category);
+    }
+
+    // 发送请求
+    fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('网络响应不正常');
+              }
+              return response.json();
+            })
+            .then(products => {
+              const container = document.getElementById('products-container');
+              container.innerHTML = '';
+
+              if (products.length === 0) {
+                container.innerHTML = '<p style="grid-column:1/-1;text-align:center;">暂无商品</p>';
+                return;
+              }
+
+              products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                // 创建商品卡片内容 - 确保包含详情页链接
+                const productLink = document.createElement('a');
+                productLink.href = `/product/${product.productId}`;
+
+                // 判断当前是否为"热门商品"(即category为空)
+                if (!category || category === '') {
+                  // 显示完整信息(含评分)
+                  productLink.innerHTML = `
+              <img src="${product.imageUrl || '/images/default-product.png'}"
+                   alt="${product.name}"
+                   class="product-image">
+              <div class="product-info">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-price">¥${product.price.toFixed(2)}</p>
+                <div class="product-rating">
+                  <span class="star-icon">★</span>
+                  <span>${product.totalScore || 0} (${product.ratingCount || 0}人评价)</span>
+                </div>
+              </div>
+            `;
+                } else {
+                  // 只显示图片和名称
+                  productLink.innerHTML = `
+              <img src="${product.imageUrl || '/images/default-product.png'}"
+                   alt="${product.name}"
+                   class="product-image">
+              <div class="product-info">
+                <h3 class="product-name">${product.name}</h3>
+              </div>
+            `;
+                }
+
+                card.appendChild(productLink);
+                container.appendChild(card);
+              });
+            })
+            .catch(error => {
+              console.error('加载商品失败:', error);
+              document.getElementById('products-container').innerHTML =
+                      '<p style="grid-column:1/-1;text-align:center;color:red;">加载商品失败，请刷新重试</p>';
+            });
+  }
+
+  // 初始加载热门商品
+  document.addEventListener('DOMContentLoaded', () => {
+    // 如果已经有初始商品，则不需要再次加载
+    if (document.querySelectorAll('.product-card').length === 0) {
+      loadProductsByCategory('');
+    }
+  });
+</script>
+</body>
+</html>

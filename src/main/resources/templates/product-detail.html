@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'商品详情 - ' + ${product.name}">商品详情 - 购物商城</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* 全局样式 - 与home.html保持一致 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 - 与home.html完全一致 */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active-link {
+            background-color: #3498db;
+        }
+
+        .nav-link span.icon {
+            margin-right: 6px;
+            font-size: 1.1em;
+        }
+
+        /* 主要内容区域 - 与home.html保持一致 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* 商品详情页特有样式 */
+        .product-detail-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .product-gallery {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .product-title {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .price-section {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .current-price {
+            color: #e74c3c;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .product-meta {
+            margin: 20px 0;
+        }
+
+        .meta-item {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .meta-label {
+            font-weight: bold;
+            min-width: 80px;
+            color: #7f8c8d;
+        }
+
+        .meta-value {
+            flex: 1;
+        }
+
+        .stock-in {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .stock-out {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d5dbdb;
+        }
+
+        .product-description {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .description-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .description-content {
+            line-height: 1.7;
+        }
+
+        /* 底部样式 - 与home.html完全一致 */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        /* 响应式设计 - 与home.html风格一致 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .product-detail-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 导航栏 - 与home.html完全一致 -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/home" class="logo">购物商城</a>
+        <div class="nav-links">
+            <a href="/home" class="nav-link"><span class="icon">🏠</span>首页</a>
+            <a href="/orders" class="nav-link"><span class="icon">📦</span>订单查看</a>
+            <a href="/profile" class="nav-link"><span class="icon">👤</span>个人信息</a>
+            <a href="/cart" class="nav-link"><span class="icon">🛒</span>购物车</a>
+            <a href="/login" class="logout-btn">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<!-- 商品详情内容 -->
+<div class="container">
+    <div class="product-detail-container">
+        <!-- 商品图片区域 -->
+        <div class="product-gallery">
+            <img th:src="${product.imageUrl}" alt="商品主图" class="main-image"/>
+            <!-- 这里可以添加缩略图列表 -->
+        </div>
+
+        <!-- 商品信息区域 -->
+        <div class="product-info">
+            <h1 class="product-title" th:text="${product.name}">商品名称</h1>
+
+            <!-- 价格区域 -->
+            <div class="price-section">
+                <div class="current-price" th:text="'¥' + ${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')}">¥0.00</div>
+            </div>
+
+            <!-- 商品元信息 -->
+            <div class="product-meta">
+                <div class="meta-item">
+                    <span class="meta-label">库存状态：</span>
+                    <span class="meta-value" th:class="${product.stock > 0} ? 'stock-in' : 'stock-out'"
+                          th:text="${product.stock > 0} ? '有货 (' + ${product.stock} + '件)' : '缺货'">
+                        库存状态
+                    </span>
+                </div>
+                <div class="meta-item" th:if="${product.totalScore != null}">
+                    <span class="meta-label">商品评分：</span>
+                    <span class="meta-value">
+                        <span th:text="${product.totalScore}">5.0</span>
+                        (<span th:text="${product.ratingCount}">100</span>人评价)
+                    </span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">商品编号：</span>
+                    <span class="meta-value" th:text="${product.productId}">123456</span>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <a th:href="@{/cart/add(productId=${product.productId})}" class="btn btn-primary">加入购物车</a>
+                <a href="/home" class="btn btn-secondary">继续购物</a>
+            </div>
+
+            <!-- 商品描述 -->
+            <div class="product-description" th:if="${product.description}">
+                <h3 class="description-title">商品描述</h3>
+                <div class="description-content" th:text="${product.description}">
+                    这里是商品的详细描述信息...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 页脚 - 与home.html完全一致 -->
+<footer class="footer">
+    <p>© 2025 购物商城 版权所有lry</p>
+</footer>
+
+</body>
+</html>

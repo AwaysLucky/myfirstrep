@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>商品分类</title>
+    <style>
+        /* 添加导航栏样式 */
+        .navbar {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .nav-link {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        .nav-link:hover {
+            color: #007bff;
+        }
+        .active-category {
+            font-weight: bold;
+            color: #007bff !important;
+        }
+        .product-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<div class="navbar">
+    <a href="/home">首页</a>
+    <span th:each="category : ${categories}">
+            <a th:href="@{/category/{category}(category=${category})}"
+               th:text="${category}"
+               th:classappend="${currentCategory == category} ? 'active-category' : ''"
+               class="nav-link"></a>
+        </span>
+</div>
+
+<h1 th:text="'当前分类: ' + ${currentCategory}"></h1>
+
+<div id="products">
+    <div th:each="product : ${products}" class="product-card">
+        <img th:src="${product.imageUrl}" alt="Product Image" style="width: 100%;">
+        <h3 th:text="${product.name}"></h3>
+        <p>价格: <span th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')}"></span></p>
+        <p>评分: <span th:text="${product.totalScore}"></span> (评分次数: <span th:text="${product.ratingCount}"></span>)</p>
+    </div>
+</div>
+</body>
+</html>
